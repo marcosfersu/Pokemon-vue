@@ -3,6 +3,7 @@
 		<div :class="[`poke-card ${types ? types[0] : ``}`]">
 			<div class="poke-img-container">
 				<div class="poke-bg-svg">
+					<PokeIcon name="IconWater" />
 					<PokeBgSvg />
 				</div>
 				<img :src="sprites" :alt="name" />
@@ -23,6 +24,7 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 import PokeBgSvg from "@/components/PokeBgSvg.vue";
+import PokeIcon from "@/components/PokeIcon.vue";
 
 defineProps({
 	name: {
