@@ -1,24 +1,22 @@
-<script>
-import { defineAsyncComponent } from "vue";
+<template>
+  <component :is="icon" />
+</template>
 
-export default {
-	props: {
-		name: {
-			type: String,
-			required: true,
-		},
-	},
+<script lang="ts" setup>
+import { defineAsyncComponent, defineProps } from "vue";
+const props = defineProps({
+  name: {
+    type: String,
+  },
+});
 
-	computed: {
-		dynamicComponent() {
-			const name = this.name;
-
-			return defineAsyncComponent(() => import(`./icons/${name}.vue`));
-		},
-	},
-};
+const icon = defineAsyncComponent(
+  () => import(`@/assets/icons/Icon-${props.name}.vue`)
+);
 </script>
 
-<template>
-	<component :is="dynamicComponent" />
-</template>
+<style scoped lang="scss">
+svg {
+  width: 2em;
+}
+</style>
