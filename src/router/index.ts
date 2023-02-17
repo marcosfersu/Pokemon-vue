@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/pokemon/:id",
-    name: "detail",
+    name: "detailPoke",
     component: DetailView,
   },
 ];

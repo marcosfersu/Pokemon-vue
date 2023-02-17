@@ -1,26 +1,28 @@
 <template>
-  <article class="contianer">
-    <div :class="[`poke-card ${types ? types[0] : ``}`]">
-      <div class="poke-img-container">
-        <div class="poke-types">
-          <PokeIcon v-for="elment in types" :key="elment" :name="elment" />
+  <router-link :to="{ name: `detailPoke`, params: { id: id } }">
+    <article class="contianer">
+      <div :class="[`poke-card card ${types ? types[0] : ``}`]">
+        <div class="poke-img-container">
+          <div class="poke-types">
+            <PokeIcon v-for="elment in types" :key="elment" :name="elment" />
+          </div>
+          <div class="poke-bg-svg">
+            <PokeBgSvg />
+          </div>
+          <img :src="sprites" :alt="name" />
         </div>
-        <div class="poke-bg-svg">
-          <PokeBgSvg />
+        <span class="poke-id">#{{ fixNumb(id) }} </span>
+        <div class="poke-name">
+          <p>
+            {{ name }}
+          </p>
+          <p class="name-jp">
+            {{ nameJp }}
+          </p>
         </div>
-        <img :src="sprites" :alt="name" />
       </div>
-      <span class="poke-id">#{{ fixNumb(id) }} </span>
-      <div class="poke-name">
-        <p>
-          {{ name }}
-        </p>
-        <p class="name-jp">
-          {{ nameJp }}
-        </p>
-      </div>
-    </div>
-  </article>
+    </article>
+  </router-link>
 </template>
 
 <script lang="ts" setup>
@@ -53,18 +55,7 @@ const fixNumb = (numb: number | undefined) => {
 </script>
 
 <style scoped lang="scss">
-.poke-card {
-  background: linear-gradient(192.43deg, #ffebcd 6.84%, #ffbe8e 97.29%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 3em;
-  border: solid #fffdec 0.7em;
-  box-shadow: 0px 2px 20px 5px rgba(0, 0, 0, 0.07);
-  min-width: 15em;
-  padding: 2em 1em;
-  transition: transform 0.15s ease-in-out;
+.poke-card.card {
   cursor: pointer;
 
   &:hover {
@@ -107,73 +98,6 @@ const fixNumb = (numb: number | undefined) => {
       position: relative;
       transition: transform 0.15s ease-in-out;
     }
-  }
-}
-
-.poke-card.grass {
-  background: linear-gradient(192.43deg, #d2eedd 6.84%, #a9d7bc 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #e8ffea;
-  }
-  .poke-id {
-    background: #669a64;
-  }
-}
-.poke-card.electric {
-  background: linear-gradient(192.43deg, #fff9c5 6.84%, #fef496 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #fffce9;
-  }
-  .poke-id {
-    background: #a39622;
-  }
-}
-.poke-card.water {
-  background: linear-gradient(192.43deg, #cce8ff 6.84%, #9dcdf3 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #e9f8fd;
-  }
-  .poke-id {
-    background: #4c8bab;
-  }
-}
-.poke-card.bug {
-  background: linear-gradient(192.43deg, #ebffc2 6.84%, #d1f487 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #f4ffdc;
-  }
-  .poke-id {
-    background: #87ab68;
-  }
-}
-.poke-card.fly {
-  background: linear-gradient(192.43deg, #dce9ff 6.84%, #9cb9eb 97.29%);
-}
-.poke-card.normal {
-  background: linear-gradient(192.43deg, #ebeff5 6.84%, #dadde3 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #f8f8f8;
-  }
-  .poke-id {
-    background: #979797;
-  }
-}
-.poke-card.poison {
-  background: linear-gradient(192.43deg, #f6dffe 6.84%, #bf94cd 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #fcddff;
-  }
-  .poke-id {
-    background: #957793;
-  }
-}
-.poke-card.fire {
-  background: linear-gradient(192.43deg, #ffebcd 6.84%, #ffbe8e 97.29%);
-  .poke-bg-svg svg g path {
-    fill: #ffeade;
-  }
-  .poke-id {
-    background: rgba(158, 70, 5, 0.67);
   }
 }
 

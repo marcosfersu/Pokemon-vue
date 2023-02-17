@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PokemonList></PokemonList>
+    <PokemonList />
   </div>
 </template>
 
