@@ -29,6 +29,7 @@
 import PokeBgSvg from "@/components/PokeBgSvg.vue";
 import PokeIcon from "@/components/PokeIcon.vue";
 import { defineProps, PropType } from "vue";
+import { fixNumb } from "@/data";
 
 defineProps({
   name: {
@@ -48,10 +49,6 @@ defineProps({
     type: Array as PropType<Array<string | undefined>>,
   },
 });
-
-const fixNumb = (numb: number | undefined) => {
-  return String(numb).padStart(3, "0");
-};
 </script>
 
 <style scoped lang="scss">

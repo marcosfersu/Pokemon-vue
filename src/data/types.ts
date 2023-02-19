@@ -13,12 +13,25 @@ export interface PokeTypes {
     name: string;
   };
 }
+export interface PokeStatsApi {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+export interface PokeStats {
+  baseStat: number;
+  name: string;
+}
 
 export interface PokeEvo {
   speciesName: string;
   minLevel: number;
   triggerName: string;
-  item: string;
+  item: { name: string; url: string };
+  sprite?: string;
+  stone?: string;
+  id?: number;
 }
 
 export interface PokeInfo {
@@ -33,6 +46,7 @@ export interface PokeInfo {
   evoId: number;
   officialArtwork: string;
   officialArtworkShiny: string;
+  stats: PokeStats[];
 }
 
 export type BoardState = (CellInfo | null)[][];
