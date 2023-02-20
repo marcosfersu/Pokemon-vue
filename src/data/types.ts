@@ -19,6 +19,16 @@ export interface PokeStatsApi {
     name: string;
   };
 }
+export interface PokeAbilitiesApi {
+  is_hidden: boolean;
+  ability: {
+    name: string;
+  };
+}
+export interface PokeAbilities {
+  isHidden: boolean;
+  name: string;
+}
 export interface PokeStats {
   baseStat: number;
   name: string;
@@ -47,6 +57,8 @@ export interface PokeInfo {
   officialArtwork: string;
   officialArtworkShiny: string;
   stats: PokeStats[];
+  abilities: string[];
+  abilitiesHidden: string[];
 }
 
 export type BoardState = (CellInfo | null)[][];

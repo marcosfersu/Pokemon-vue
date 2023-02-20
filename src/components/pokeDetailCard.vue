@@ -69,9 +69,11 @@ defineProps({
   types: {
     type: Array as PropType<Array<string | undefined>>,
   },
+
   nameJp: {
     type: String,
   },
+
   id: {
     type: Number,
   },
@@ -79,6 +81,7 @@ defineProps({
   artwork: {
     type: String,
   },
+
   artworkShiny: {
     type: String,
   },
@@ -89,11 +92,13 @@ let show = ref(false);
 
 <style lang="scss" scoped>
 .detail-img.card {
-  height: 85vh;
+  height: 100%;
   padding: 2em;
   justify-content: space-between;
   position: relative;
   box-sizing: border-box;
+  grid-area: card;
+
   & > img {
     height: 100%;
     max-height: 60vh;

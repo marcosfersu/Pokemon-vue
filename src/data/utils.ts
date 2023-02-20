@@ -1,5 +1,12 @@
 import App from "@/App.vue";
-import { PokeEvo, PokeInfo, PokeStats, PokeStatsApi, PokeTypes } from "@/data";
+import {
+  PokeAbilitiesApi,
+  PokeEvo,
+  PokeInfo,
+  PokeStats,
+  PokeStatsApi,
+  PokeTypes,
+} from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
@@ -22,11 +29,20 @@ const getTypes = (types: PokeTypes[]) => {
   });
   return typeList;
 };
+const getAbilities = (abilities: PokeAbilitiesApi[], hidden: boolean) => {
+  const abilitieList: string[] = [];
+  abilities.forEach((abilityt) => {
+    if (hidden) {
+      if (abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
+    } else {
+      if (!abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
+    }
+  });
+  return abilitieList;
+};
 const getStats = (stats: PokeStatsApi[]) => {
   const statsList: PokeStats[] = [];
   stats.forEach((stat) => {
-    if (stat.stat.name === "special-attack") stat.stat.name = "specialAttack";
-    if (stat.stat.name === "special-defense") stat.stat.name = "specialDefense";
     const currentStat = {
       baseStat: stat.base_stat,
       name: stat.stat.name,
@@ -71,6 +87,9 @@ const getInividualPoke = async (urlPoke: string) => {
 
   const resStats = getStats(individualPoke.stats);
 
+  const resAbilities = getAbilities(individualPoke.abilities, false);
+  const resHiddenAbilities = getAbilities(individualPoke.abilities, true);
+
   const pokemonData: PokeInfo = {
     id: individualPoke.id,
     name: individualPoke.name,
@@ -86,6 +105,8 @@ const getInividualPoke = async (urlPoke: string) => {
     types: resTypes,
     stats: resStats,
     evoId: extraData.evoId,
+    abilities: resAbilities,
+    abilitiesHidden: resHiddenAbilities,
   };
   console.log(pokemonData);
 
@@ -157,3 +178,5 @@ export const getEvoList = async (urlBase: string) => {
 
 export const fixNumb = (numb: number | undefined) =>
   String(numb).padStart(3, "0");
+export const fixWeightHeight = (numb: number | undefined) =>
+  numb ? numb / 10 : "";

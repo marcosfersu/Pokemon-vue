@@ -9,11 +9,49 @@
         </div>
       </div>
     </article>
-    <article class="stats-info-detail card detail-card">
-      <div v-for="stat in stats" :key="stat.name">
-        <p class="stat-name">{{ stat.name }}</p>
-        <div class="line"></div>
-        <p class="stat-value">{{ stat.baseStat }}</p>
+    <article class="stats-info">
+      <div class="stats-info-detail card detail-card">
+        <div class="stats-rapper item-info">
+          <p>weight</p>
+          <div class="line"></div>
+          <p class="stat-value">{{ fixWeightHeight(weight) }} kg</p>
+        </div>
+        <div class="stats-rapper item-info">
+          <p>height</p>
+          <div class="line"></div>
+          <p class="stat-value">{{ fixWeightHeight(height) }} m</p>
+        </div>
+        <div v-for="stat in stats" :key="stat.name" class="item-info">
+          <p class="stat-name">{{ stat.name }}</p>
+          <div class="line"></div>
+          <p class="stat-value">{{ stat.baseStat }}</p>
+        </div>
+      </div>
+      <div class="abilites-info-detail stats-info-detail card detail-card">
+        <div class="abilites-container">
+          <div class="item-info">
+            <p class="stat-name">abilities</p>
+            <div class="line"></div>
+            <div>
+              <p class="stat-value" v-for="ability in abilities" :key="ability">
+                {{ ability }}
+              </p>
+            </div>
+          </div>
+          <div class="item-info">
+            <p class="stat-name">hidden abilities</p>
+            <div class="line"></div>
+            <div>
+              <p
+                class="stat-value"
+                v-for="ability in abilitiesHidden"
+                :key="ability"
+              >
+                {{ ability }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </article>
     <EvoChange :idEvo="evoId" />
@@ -28,24 +66,38 @@
 <script lang="ts" setup>
 import EvoChange from "@/components/EvoChange.vue";
 import PokeIcon from "@/components/PokeIcon.vue";
-import { fixNumb, PokeStats } from "@/data";
+import { fixNumb, fixWeightHeight, PokeStats } from "@/data";
 import { defineProps, PropType } from "vue";
 
-defineProps({
+const props = defineProps({
   flavorText: {
     type: String,
   },
   types: {
     type: Array as PropType<Array<string | undefined>>,
   },
-  id: {
-    type: Number,
-  },
   stats: {
     type: Array as PropType<Array<PokeStats>>,
   },
+  abilities: {
+    type: Array as PropType<Array<string>>,
+  },
+  abilitiesHidden: {
+    type: Array as PropType<Array<string>>,
+  },
+  id: {
+    type: Number,
+  },
 
   evoId: {
+    type: Number,
+  },
+
+  height: {
+    type: Number,
+  },
+
+  weight: {
     type: Number,
   },
 });
@@ -56,8 +108,10 @@ defineProps({
   flex-direction: column;
   align-items: flex-start;
   gap: 2em;
-  height: 85vh;
+  height: 100%;
   overflow: auto;
+  padding-right: 2em;
+
   .first-info-detail {
     display: flex;
     gap: 1.5em;
@@ -90,19 +144,30 @@ defineProps({
     }
   }
 
+  .stats-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .stats-info-detail {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
     gap: 1em 4em;
 
-    div {
+    .stats-rapper {
+      margin-bottom: 1.5em;
+    }
+    .item-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 1em;
       p {
         margin: 0;
+        white-space: nowrap;
       }
 
       .stat-value {
@@ -117,6 +182,19 @@ defineProps({
   }
   .flavor-text {
     margin: 0;
+  }
+
+  .abilites-info-detail {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 1em 4em;
+
+    .abilites-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
   }
 }
 </style>
