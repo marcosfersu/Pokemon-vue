@@ -106,6 +106,11 @@ const cardTransform = computed(() => {
     min-height: 30%;
   }
 
+  @media screen and (max-width: 550px) {
+    gap: 1em;
+    padding: 1em 2em;
+  }
+
   & > img {
     height: 100%;
     max-height: 60vh;
