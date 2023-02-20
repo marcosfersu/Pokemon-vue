@@ -28,8 +28,8 @@
 <script lang="ts" setup>
 import PokeBgSvg from "@/components/PokeBgSvg.vue";
 import PokeIcon from "@/components/PokeIcon.vue";
-import { defineProps, PropType } from "vue";
 import { fixNumb } from "@/data";
+import { defineProps, PropType } from "vue";
 
 defineProps({
   name: {
@@ -55,20 +55,22 @@ defineProps({
 .poke-card.card {
   cursor: pointer;
 
-  &:hover {
-    transform: scale(0.97);
-    transition: all 0.25s ease-in-out;
-    box-shadow: 0 0 11px rgba(0, 0, 0, 0.07);
-  }
+  @media screen and (min-width: 800px) {
+    &:hover {
+      transform: scale(0.97);
+      transition: all 0.25s ease-in-out;
+      box-shadow: 0 0 11px rgba(0, 0, 0, 0.07);
+    }
 
-  &:hover .poke-img-container img {
-    transform: scale(1.15);
-    transition: transform 0.25s ease-in-out;
-  }
+    &:hover .poke-img-container img {
+      transform: scale(1.15);
+      transition: transform 0.25s ease-in-out;
+    }
 
-  &:hover .poke-bg-svg svg {
-    transform: rotate(-20deg);
-    transition: transform 0.35s ease-in-out;
+    &:hover .poke-bg-svg svg {
+      transform: rotate(-20deg);
+      transition: transform 0.35s ease-in-out;
+    }
   }
 
   .poke-img-container {
