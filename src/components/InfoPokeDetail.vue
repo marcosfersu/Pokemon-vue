@@ -69,7 +69,7 @@ import PokeIcon from "@/components/PokeIcon.vue";
 import { fixNumb, fixWeightHeight, PokeStats } from "@/data";
 import { defineProps, PropType } from "vue";
 
-const props = defineProps({
+defineProps({
   flavorText: {
     type: String,
   },
@@ -111,14 +111,42 @@ const props = defineProps({
   height: 100%;
   overflow: auto;
   padding-right: 2em;
+  @media screen and (max-width: 1200px) {
+    padding-right: 0;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #b4b4b4;
+  }
 
   .first-info-detail {
     display: flex;
     gap: 1.5em;
+
+    @media screen and (max-width: 700px) {
+      width: 100%;
+    }
+
     .type-card {
       flex-direction: column;
       align-items: center;
       padding: 1em 2em;
+      @media screen and (max-width: 700px) {
+        width: 50%;
+      }
+
       .detail-title {
         font-weight: 100;
         font-size: 2em;
@@ -130,6 +158,9 @@ const props = defineProps({
         gap: 1em;
         svg {
           width: 3em;
+          @media screen and (max-width: 550px) {
+            width: 2.5em;
+          }
         }
       }
     }
@@ -141,6 +172,10 @@ const props = defineProps({
       justify-content: center;
       align-items: center;
       width: 5em;
+
+      @media screen and (max-width: 700px) {
+        width: 50%;
+      }
     }
   }
 
@@ -156,7 +191,9 @@ const props = defineProps({
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
     gap: 1em 4em;
-
+    @media screen and (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
     .stats-rapper {
       margin-bottom: 1.5em;
     }

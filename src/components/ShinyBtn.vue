@@ -1,6 +1,6 @@
 <template>
   <div class="shiny-btn">
-    <p>normal</p>
+    <p class="nomal-text">normal</p>
     <div>
       <input type="checkbox" id="switch" v-model="check" /><label for="switch"
         >Toggle</label
@@ -34,6 +34,12 @@ const check = computed({
   gap: 1em;
   justify-content: center;
   align-items: center;
+
+  .nomal-text {
+    @media screen and (max-width: 550px) {
+      display: none;
+    }
+  }
 }
 input[type="checkbox"] {
   height: 0;
@@ -51,6 +57,10 @@ label {
   display: block;
   border-radius: 100px;
   position: relative;
+  @media screen and (max-width: 550px) {
+    width: 70px;
+    height: 40px;
+  }
 }
 
 label:after {
@@ -63,6 +73,11 @@ label:after {
   background: #fff;
   border-radius: 90px;
   transition: 0.3s;
+
+  @media screen and (max-width: 550px) {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 input:checked + label {

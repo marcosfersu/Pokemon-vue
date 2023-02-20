@@ -87,9 +87,15 @@ const pokeSprite = computed(() => {
 .card.detail-card.evo-card {
   flex-direction: column;
   align-items: center;
-
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
   .evo-card-info {
     display: flex;
+    @media screen and (max-width: 550px) {
+      flex-direction: column;
+      width: 100%;
+    }
   }
   .detail-title {
     font-weight: 100;
@@ -105,8 +111,19 @@ const pokeSprite = computed(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 550px) {
+      flex-direction: column;
+    }
+
     .evo-info {
       position: relative;
+      @media screen and (max-width: 550px) {
+        height: 4em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1em;
+      }
       svg {
         position: absolute;
         top: 50%;

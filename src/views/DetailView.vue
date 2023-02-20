@@ -69,7 +69,14 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
   align-items: center;
   height: 100%;
   overflow: hidden;
-
+  @media screen and (max-height: 850px) {
+    height: auto;
+    overflow: scroll;
+  }
+  @media screen and (max-width: 1200px) {
+    height: auto;
+    overflow: scroll;
+  }
   & > div {
     height: 85%;
     width: 100%;
@@ -82,6 +89,26 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
       "card detail"
       "card btn";
 
+    @media screen and (max-height: 850px) {
+      height: auto;
+      align-items: start;
+      padding: 3em 0 2em 0;
+    }
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: 600px;
+      justify-content: center;
+      padding: 3em 0 2em 0;
+      grid-template-rows: 1fr;
+      gap: 3.3em;
+      grid-template-areas:
+        "card"
+        "detail"
+        "btn";
+    }
+
+    @media screen and (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
     .btn-container {
       grid-area: btn;
     }

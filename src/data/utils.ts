@@ -108,7 +108,6 @@ const getInividualPoke = async (urlPoke: string) => {
     abilities: resAbilities,
     abilitiesHidden: resHiddenAbilities,
   };
-  console.log(pokemonData);
 
   return pokemonData;
 };

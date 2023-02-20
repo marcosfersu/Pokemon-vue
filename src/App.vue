@@ -1,9 +1,13 @@
 <template>
   <div class="app-container">
     <nav>
-      <div>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/types">Types</router-link> |
+      <div class="nav-container">
+        <router-link to="/">
+          <div class="squere">
+            <div class="content">home</div>
+          </div>
+        </router-link>
+        | <router-link to="/types">Types</router-link> |
         <router-link to="/pokemon/1">Pokemon details</router-link>
       </div>
     </nav>
@@ -48,6 +52,18 @@ body {
   grid-template-columns: 30em 1fr;
   grid-template-rows: 100vh;
   gap: 4em;
+
+  @media screen and (max-width: 2000px) {
+    grid-template-columns: 20em 1fr;
+  }
+
+  @media screen and (max-width: 1600px) {
+    grid-template-columns: 1fr;
+    margin: 0 3rem;
+  }
+  @media screen and (max-width: 1200px) {
+    margin: 0 1.5rem;
+  }
 }
 
 .main-container {
@@ -59,8 +75,21 @@ nav {
   flex-flow: column;
   justify-content: center;
   margin: 0 2em;
-
-  div {
+  @media screen and (max-width: 1600px) {
+    display: none;
+  }
+  .squere {
+    width: 100%;
+    height: 0;
+    padding-top: 100%;
+    position: relative;
+  }
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .nav-container {
     padding: 30px;
     background: linear-gradient(
       180deg,
@@ -71,6 +100,7 @@ nav {
     box-shadow: -4px 3px 50px 5px rgb(0 0 0 / 5%);
     border-radius: 36px;
     height: calc(80% + 2em);
+    box-sizing: border-box;
   }
 
   a {
