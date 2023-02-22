@@ -22,8 +22,10 @@
       v-on:load="onload"
     />
   -->
-		<PokeImgDetail :artwork="artwork" :showImg="!showImg" :alt="name" />
-		<PokeImgDetail :artwork="artworkShiny" :showImg="showImg" :alt="name" />
+		<div class="poke-artwork-container">
+			<PokeImgDetail :artwork="artwork" :showImg="!showImg" :alt="name" />
+			<PokeImgDetail :artwork="artworkShiny" :showImg="showImg" :alt="name" />
+		</div>
 
 		<div class="poke-bg-svg">
 			<PokeBgDetailSvg />
@@ -120,7 +122,7 @@ const cardTransform = computed(() => {
 		padding: 1em 2em;
 	}
 
-	& > img {
+	.poke-artwork-container img {
 		height: 100%;
 		max-height: 60vh;
 		object-fit: cover;
