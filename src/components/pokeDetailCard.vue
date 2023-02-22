@@ -13,8 +13,16 @@
       </div>
       <ShinyBtn @swicthShiny="showImg = $event" />
     </div>
-
-    <img v-show="!showImg" :src="artwork" :alt="name" loading="lazy" />
+    <!--
+    <img
+      v-show="!showImg && toggle"
+      :src="artwork"
+      :alt="name"
+      loading="lazy"
+      v-on:load="onload"
+    />
+  -->
+    <PokeImgDetail :artwork="artwork" />
     <img v-show="showImg" :src="artworkShiny" :alt="name" loading="lazy" />
 
     <div class="poke-bg-svg">
@@ -30,6 +38,7 @@
 <script setup lang="ts">
 import IconFirstGen from "@/assets/icons/IconFirstGen.vue";
 import PokeBgDetailSvg from "@/components/PokeBgDetailSvg.vue";
+import PokeImgDetail from "@/components/PokeImgDetail.vue";
 import ShinyBtn from "@/components/ShinyBtn.vue";
 import { useMouseInElement } from "@vueuse/core";
 import { computed, defineProps, onBeforeMount, PropType, ref, Ref } from "vue";
