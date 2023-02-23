@@ -3,11 +3,12 @@
     <nav>
       <div class="nav-container">
         <router-link to="/">
-          <div class="squere">
-            <div class="content">home</div>
+          <div class="nav-item">
+            <icon-pokedex />
+            <p>Pokedex</p>
           </div>
         </router-link>
-        | <router-link to="/types">Types</router-link> |
+        <router-link to="/types">Types</router-link>
         <router-link to="/pokemon/1">Pokemon details</router-link>
       </div>
     </nav>
@@ -21,6 +22,7 @@
 import { getEvoList, getPokeList } from "@/data";
 import { usePokeStore } from "@/store";
 import { onBeforeMount } from "vue";
+import IconPokedex from "./assets/icons/IconPokedex.vue";
 
 const pokeActions = usePokeStore();
 
@@ -52,6 +54,8 @@ body {
   grid-template-columns: 30em 1fr;
   grid-template-rows: 100vh;
   gap: 4em;
+  max-width: 2000px;
+  margin: 0 auto;
 
   @media screen and (max-width: 2000px) {
     grid-template-columns: 20em 1fr;
@@ -78,17 +82,7 @@ nav {
   @media screen and (max-width: 1600px) {
     display: none;
   }
-  .squere {
-    width: 100%;
-    height: 0;
-    padding-top: 100%;
-    position: relative;
-  }
-  .content {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+
   .nav-container {
     padding: 30px;
     background: linear-gradient(
@@ -101,6 +95,43 @@ nav {
     border-radius: 36px;
     height: calc(80% + 2em);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+
+    & a.router-link-active {
+      background-color: #e7cad5;
+      border-radius: 1em;
+      color: white;
+
+      svg {
+        background-color: #b8a4b7;
+        border-radius: 1em;
+      }
+
+      svg g path {
+        fill: white;
+      }
+    }
+
+    .nav-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-right: 1.2em;
+      gap: 1em;
+
+      p {
+        margin: 0;
+        font-size: 2em;
+      }
+
+      svg {
+        width: 3em;
+        padding: 1em;
+      }
+    }
   }
 
   a {
@@ -109,6 +140,10 @@ nav {
 
     &.router-link-exact-active {
       color: #42b983;
+
+      svg g path {
+        fill: #42b983;
+      }
     }
   }
 }
@@ -288,7 +323,7 @@ a {
 
 .btn-icon {
   svg g path {
-    fill: #d4c9ce;
+    fill: #ecdfe4;
   }
 }
 </style>

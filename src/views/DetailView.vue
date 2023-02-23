@@ -96,8 +96,9 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
     max-width: 1800px;
     display: grid;
     align-items: center;
-    grid-template-columns: 50% 34rem;
-    grid-template-rows: 1fr calc(8em);
+    justify-content: center;
+    grid-template-columns: 50em 34rem;
+    grid-template-rows: 1fr 8em;
     gap: 0 2vw;
     grid-template-areas:
       "card detail"
@@ -142,10 +143,6 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
         background-color: #f4f6f8;
         border-radius: 50%;
         padding: 0.5em;
-
-        svg g path {
-          fill: #1c1c1c !important;
-        }
       }
 
       .btn {

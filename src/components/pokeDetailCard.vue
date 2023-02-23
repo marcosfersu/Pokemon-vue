@@ -115,9 +115,9 @@ const cardTransform = computed(() => {
 
   .poke-artwork-container {
     display: flex;
-    height: 100%;
+    width: 100%;
     img {
-      height: 100%;
+      width: 100%;
       max-height: 60vh;
       object-fit: cover;
       z-index: 4;
