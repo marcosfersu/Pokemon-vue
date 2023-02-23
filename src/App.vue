@@ -80,7 +80,6 @@ nav {
   justify-content: center;
   margin: 0 2em;
   @media screen and (max-width: 1600px) {
-    display: none;
   }
 
   .nav-container {
