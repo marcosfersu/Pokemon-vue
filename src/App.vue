@@ -285,4 +285,10 @@ a {
     }
   }
 }
+
+.btn-icon {
+  svg g path {
+    fill: #d4c9ce;
+  }
+}
 </style>

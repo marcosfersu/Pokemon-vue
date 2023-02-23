@@ -55,7 +55,7 @@
       </div>
     </article>
     <EvoChange :idEvo="evoId" />
-    <div class="card detail-card">
+    <div class="card detail-card last-card">
       <p class="flavor-text">
         {{ flavorText }}
       </p>
@@ -111,6 +111,7 @@ defineProps({
   height: 100%;
   overflow: auto;
   padding-right: 2em;
+
   @media screen and (max-width: 1200px) {
     padding-right: 0;
   }
@@ -232,6 +233,10 @@ defineProps({
       flex-direction: column;
       gap: 1em;
     }
+  }
+
+  .last-card {
+    margin-bottom: 2em;
   }
 }
 </style>

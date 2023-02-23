@@ -21,22 +21,35 @@
         :abilitiesHidden="filter.abilitiesHidden"
       />
       <div class="btn-container">
+        <div class="btn-icon">
+          <PokeBgSvg />
+        </div>
         <router-link
           :to="{ name: `detailPoke`, params: { id: filter.id - 1 } }"
         >
-          <button class="btn plus" :disabled="filter.id <= 1">-1</button>
+          <button
+            class="btn plus first"
+            role="button"
+            :disabled="filter.id <= 1"
+          >
+            <IconArrow />
+          </button>
         </router-link>
         <router-link
           :to="{ name: `detailPoke`, params: { id: filter.id + 1 } }"
         >
-          <button class="btn plus" :disabled="filter.id >= 151">+1</button>
+          <button class="btn plus" role="button" :disabled="filter.id >= 151">
+            <IconArrow />
+          </button>
         </router-link>
       </div>
     </div>
   </section>
 </template>
 <script setup lang="ts">
+import IconArrow from "@/assets/icons/IconArrow.vue";
 import InfoPokeDetail from "@/components/InfoPokeDetail.vue";
+import PokeBgSvg from "@/components/PokeBgSvg.vue";
 import PokeDetailCard from "@/components/pokeDetailCard.vue";
 import { PokeInfo } from "@/data";
 import { usePokeStore } from "@/store";
@@ -84,7 +97,8 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
     display: grid;
     align-items: center;
     grid-template-columns: 50% 34rem;
-    gap: 2vw;
+    grid-template-rows: 1fr calc(8em);
+    gap: 0 2vw;
     grid-template-areas:
       "card detail"
       "card btn";
@@ -111,6 +125,90 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
     }
     .btn-container {
       grid-area: btn;
+      display: flex;
+      gap: 1em;
+      padding-top: 2em;
+      margin-top: 1em;
+      border-top: 3px solid #d4c9ce;
+      position: relative;
+
+      .btn-icon {
+        width: 2em;
+        height: 2em;
+        position: absolute;
+        left: 50%;
+        top: -1.5em;
+        transform: translate(-50%, 0);
+        background-color: #f4f6f8;
+        border-radius: 50%;
+        padding: 0.5em;
+
+        svg g path {
+          fill: #1c1c1c !important;
+        }
+      }
+
+      .btn {
+        appearance: button;
+        background-color: #ecdfe4;
+        background-image: none;
+        border: 1px solid #ecdfe4;
+        border-radius: 4px;
+        box-shadow: #fffeec 4px 4px 0 0, #d4c9ce 4px 4px 0 1px;
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        overflow: visible;
+        text-align: center;
+        text-transform: none;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 5em;
+        height: 5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.first svg {
+          transform: rotate(180deg);
+        }
+
+        svg {
+          width: 2em;
+          height: 2em;
+        }
+      }
+
+      .btn:focus {
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        text-decoration: none;
+      }
+
+      .btn:active {
+        box-shadow: #d4c9ce 0 3px 5px inset;
+        outline: 0;
+      }
+
+      .btn:not([disabled]):active {
+        box-shadow: #fff 2px 2px 0 0, #d4c9ce 2px 2px 0 1px;
+        transform: translate(2px, 2px);
+      }
+
+      @media (min-width: 768px) {
+        .button-50 {
+          padding: 12px 50px;
+        }
+      }
     }
   }
 }
