@@ -37,8 +37,18 @@ export interface PokeStats {
 export interface PokeEvo {
   speciesName: string;
   minLevel: number;
-  triggerName: string;
-  item: { name: string; url: string };
+  triggerName: string | null;
+  item: { name: string; url: string } | null;
+  sprite?: string;
+  stone?: string;
+  id?: number;
+}
+
+export interface IevoData {
+  speciesName: string;
+  minLevel: number;
+  triggerName: string | null;
+  item: { name: string; url: string } | null;
   sprite?: string;
   stone?: string;
   id?: number;
@@ -67,7 +77,7 @@ export type PokeStoreInfo = PokeInfo[];
 
 export type EvoStoreInfo = {
   id: number;
-  data: PokeEvo[];
+  data: (PokeEvo | PokeEvo[])[];
 }[];
 
 export type OrthDirection = 0 | 1 | 2 | 4 | 8;

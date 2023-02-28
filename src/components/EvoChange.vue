@@ -3,34 +3,17 @@
     <h3 class="detail-title">evolution chain</h3>
     <div class="evo-card-info">
       <div
-        v-for="detail in pokeSprite"
-        :key="detail.speciesName"
+        v-for="(pokeEvo, index) in pokeEvoList"
+        :key="index"
         class="evo-poke-container"
       >
-        <div class="evo-chain-poke">
-          <div v-if="detail.minLevel > 1" class="evo-info">
-            <p class="lvl-poke">lvl {{ detail.minLevel }}</p>
-            <ArrowEvo />
+        <div v-if="Array.isArray(pokeEvo)">
+          <div v-for="parallel in pokeEvo" :key="parallel.id">
+            <EvoItem :evoData="parallel" />
           </div>
-          <div v-if="detail.triggerName === `trade`" class="evo-info">
-            <p class="lvl-poke">
-              {{ detail.triggerName }}
-            </p>
-            <ArrowEvo />
-          </div>
-          <div v-if="detail.stone" class="evo-info">
-            <div class="lvl-poke">
-              <img :src="detail.stone" alt="" />
-            </div>
-            <ArrowEvo />
-          </div>
-          <router-link
-            :to="{ name: `detailPoke`, params: { id: detail.id } }"
-            class="evo-chain-img"
-          >
-            <img :src="detail.sprite" alt="" />
-            <p>{{ detail.speciesName }}</p>
-          </router-link>
+        </div>
+        <div v-else>
+          <EvoItem :evoData="pokeEvo" />
         </div>
       </div>
     </div>
@@ -38,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import ArrowEvo from "@/components/ArrowEvo.vue";
 import { PokeEvo, PokeInfo } from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
 import { computed, defineProps } from "vue";
+import EvoItem from "./EvoItem.vue";
 const evoActions = useEvoStore();
 const pokeActions = usePokeStore();
 const props = defineProps({
@@ -57,30 +40,55 @@ const filterEvo = computed(() =>
   evos.find((evo: { id: number }) => props.idEvo === evo.id)
 );
 
-const pokeSprite = computed(() => {
-  let lastFilter: PokeEvo[] = [];
+const pokeEvoList = computed(() => {
+  let ActualEvoList: (PokeEvo | PokeEvo[])[] = [];
   if (filterEvo.value) {
-    filterEvo.value.data.map((sprite: PokeEvo) => {
+    filterEvo.value.data.map((actualEvo: PokeEvo | PokeEvo[]) => {
+      if (Array.isArray(actualEvo)) {
+        let parallelArray: PokeEvo[] = [];
+
+        actualEvo.map((parallel) => {
+          const pokeEvoIndi = pokes.find(
+            (pokeS: PokeInfo) => parallel.speciesName === pokeS.name
+          );
+
+          (async () => {
+            if (parallel.item) {
+              const res = await fetch(parallel.item.url);
+              const extraData = await res.json();
+
+              parallel.stone = extraData.sprites.default;
+            }
+          })();
+          parallel.sprite = pokeEvoIndi?.sprites;
+          parallel.id = pokeEvoIndi?.id;
+
+          if (pokeEvoIndi) parallelArray.push(parallel);
+        });
+        ActualEvoList.push(parallelArray);
+        return ActualEvoList;
+      }
+
       const pokeEvoIndi = pokes.find(
-        (pokeS: PokeInfo) => sprite.speciesName === pokeS.name
+        (pokeS: PokeInfo) => actualEvo.speciesName === pokeS.name
       );
 
-      if (sprite.item) {
-        (async () => {
-          const res = await fetch(sprite.item.url);
+      (async () => {
+        if (actualEvo.item) {
+          const res = await fetch(actualEvo.item.url);
           const extraData = await res.json();
 
-          sprite.stone = extraData.sprites.default;
-        })();
-      }
-      sprite.sprite = pokeEvoIndi?.sprites;
-      sprite.id = pokeEvoIndi?.id;
+          actualEvo.stone = extraData.sprites.default;
+        }
+      })();
+      actualEvo.sprite = pokeEvoIndi?.sprites;
+      actualEvo.id = pokeEvoIndi?.id;
 
-      if (pokeEvoIndi) lastFilter.push(sprite);
+      if (pokeEvoIndi) ActualEvoList.push(actualEvo);
     });
   }
 
-  return lastFilter;
+  return ActualEvoList;
 });
 </script>
 <style lang="scss" scpoed>
@@ -97,61 +105,21 @@ const pokeSprite = computed(() => {
       width: 100%;
     }
   }
-  .detail-title {
-    font-weight: 100;
-    font-size: 2em;
-    margin: 0 0 0.3em 0;
+
+  .evo-poke-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .evo-poke-container:nth-child(1) :is(.lvl-poke, svg) {
     display: none;
   }
 
-  .evo-chain-poke {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @media screen and (max-width: 550px) {
-      flex-direction: column;
-    }
-
-    .evo-info {
-      position: relative;
-      @media screen and (max-width: 550px) {
-        height: 4em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 1em;
-      }
-      svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1;
-      }
-      .lvl-poke {
-        margin: 0 1em;
-        min-width: 3.5em;
-        z-index: 2;
-        position: relative;
-
-        img {
-          width: 2.5em;
-        }
-      }
-    }
-
-    .evo-chain-img {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      p {
-        margin: 0;
-      }
-    }
+  .detail-title {
+    font-weight: 100;
+    font-size: 2em;
+    margin: 0 0 0.3em 0;
   }
 }
 </style>

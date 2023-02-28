@@ -127,7 +127,7 @@ const getIndividualEvo = async (urlEvo: string) => {
   const res = await fetch(urlEvo);
   const individualEvo = await res.json();
 
-  const evoChain: PokeEvo[] = [];
+  const evoChain: (PokeEvo | PokeEvo[])[] = [];
   let evoData = individualEvo.chain;
 
   do {
@@ -139,14 +139,44 @@ const getIndividualEvo = async (urlEvo: string) => {
       triggerName: !evoDetails ? null : evoDetails.trigger.name,
       item: !evoDetails ? null : evoDetails.item,
     });
-    //if (evoData["evolves_to"].length > 1) console.log(evoData);
+
+    if (evoData["evolves_to"].length > 1) {
+      const evoParallel: PokeEvo[] = [];
+      evoData["evolves_to"].map(
+        (evoData: {
+          species: { name: string };
+          evolution_details: {
+            min_level: number;
+            trigger: { name: string };
+            item: { name: string; url: string };
+          }[];
+        }) => {
+          const evoDetails = evoData["evolution_details"][0];
+
+          evoParallel.push({
+            speciesName: evoData.species.name,
+            minLevel: !evoDetails
+              ? 1
+              : evoData["evolution_details"][0].min_level,
+            triggerName: !evoDetails
+              ? null
+              : evoData["evolution_details"][0].trigger.name,
+            item: !evoDetails ? null : evoDetails.item,
+          });
+        }
+      );
+
+      evoChain.push(evoParallel);
+      break;
+    }
+
     evoData = evoData["evolves_to"][0];
   } while (
     evoData &&
     Object.prototype.hasOwnProperty.call(evoData, "evolves_to")
   );
 
-  const evoPokeList: { id: number; data: PokeEvo[] } = {
+  const evoPokeList: { id: number; data: (PokeEvo | PokeEvo[])[] } = {
     id: individualEvo.id,
     data: evoChain,
   };

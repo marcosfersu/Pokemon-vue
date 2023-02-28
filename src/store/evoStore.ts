@@ -5,14 +5,14 @@ import { EvoStoreInfo, PokeEvo } from "../data";
 export const useEvoStore = defineStore("evo", () => {
   const EvoStore: Ref<EvoStoreInfo> = ref([]);
 
-  const allEvoStore = (evo: { id: number; data: PokeEvo[] }) => {
+  const allEvoStore = (evo: { id: number; data: (PokeEvo | PokeEvo[])[] }) => {
     EvoStore.value.push(evo);
     EvoStore.value.sort(function (x, y) {
       return x.id - y.id;
     });
   };
 
-  const checkEvo = (evo: { id: number; data: PokeEvo[] }) => {
+  const checkEvo = (evo: { id: number; data: (PokeEvo | PokeEvo[])[] }) => {
     const evoFitler = EvoStore.value.filter(
       (evoS: { id: number }) => evo.id === evoS.id
     );
