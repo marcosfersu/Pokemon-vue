@@ -1,22 +1,29 @@
 <template>
-  <router-link :to="{ name: `detailPoke`, params: { id: id } }">
-    <article class="contianer">
-      <div :class="types[0]" class="poke-card card" v-if="types">
-        <PokeCardInner
-          :name="name"
-          :nameJp="nameJp"
-          :sprites="sprites"
-          :id="id"
-          :types="types"
-        />
-      </div>
-    </article>
-  </router-link>
+  <div class="poke-img-container">
+    <div class="poke-types" v-if="types">
+      <PokeIcon v-for="elment in types" :key="elment" :name="elment" />
+    </div>
+    <div class="poke-bg-svg">
+      <PokeBgSvg />
+    </div>
+    <img :src="sprites" :alt="name" />
+  </div>
+  <span class="poke-id">#{{ fixNumb(id) }} </span>
+  <div class="poke-name">
+    <p>
+      {{ name }}
+    </p>
+    <p class="name-jp">
+      {{ nameJp }}
+    </p>
+  </div>
 </template>
 
 <script lang="ts" setup>
+import PokeBgSvg from "@/components/PokeBgSvg.vue";
+import PokeIcon from "@/components/PokeIcon.vue";
+import { fixNumb } from "@/data";
 import { defineProps, PropType } from "vue";
-import PokeCardInner from "./PokeCardInner.vue";
 
 defineProps({
   name: {
@@ -57,6 +64,32 @@ defineProps({
     &:hover .poke-bg-svg svg {
       transform: rotate(-20deg);
       transition: transform 0.35s ease-in-out;
+    }
+  }
+
+  .poke-img-container {
+    width: 100%;
+    position: relative;
+
+    .poke-bg-svg {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      z-index: 0;
+      left: 50%;
+      top: -25px;
+      transform: translate(-50%, 0%);
+      svg {
+        transition: transform 0.15s ease-in-out;
+      }
+    }
+
+    img {
+      width: 100%;
+      object-fit: cover;
+      z-index: 3;
+      position: relative;
+      transition: transform 0.15s ease-in-out;
     }
   }
 }
