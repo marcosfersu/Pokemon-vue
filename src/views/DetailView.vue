@@ -80,7 +80,7 @@ const filter: ComputedRef<PokeInfo | undefined> = computed(() =>
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 
   @media screen and (max-width: 1200px) {
