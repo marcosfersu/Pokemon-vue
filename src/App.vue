@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { getEvoList, getPokeList } from "@/data";
 import { usePokeStore } from "@/store";
-import { onBeforeMount, onMounted, onUpdated } from "vue";
+import { onBeforeMount } from "vue";
 import IconPokedex from "./assets/icons/IconPokedex.vue";
 
 const pokeActions = usePokeStore();
@@ -33,17 +33,6 @@ onBeforeMount(async () => {
   if (pokeActions.pokeStore.length === 0) {
     await getPokeList(urlPoke);
     await getEvoList(urlEvo);
-  }
-});
-
-onMounted(() => {
-  console.log(window.innerWidth > document.body.clientWidth);
-});
-
-onUpdated(() => {
-  console.log(window.innerWidth > document.body.clientWidth);
-  if (window.innerWidth > document.body.clientWidth) {
-    console.log("asd");
   }
 });
 </script>
