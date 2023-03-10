@@ -1,5 +1,20 @@
 <template>
   <div class="app-container">
+    <nav role="navigation">
+      <div id="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+        <ul id="menu nav-container">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Info</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!--
     <nav>
       <div class="nav-container">
         <router-link to="/">
@@ -13,6 +28,7 @@
         <router-link to="/pokemon/1">Pokemon details</router-link>
       </div>
     </nav>
+    -->
     <section class="main-container">
       <router-view />
     </section>
@@ -23,8 +39,11 @@
 import { getEvoList, getPokeList } from "@/data";
 import { usePokeStore } from "@/store";
 import { onBeforeMount } from "vue";
+<<<<<<< Updated upstream
 import IconPokedex from "./assets/icons/IconPokedex.vue";
 import IconPokedexActive from "./assets/icons/IconPokedexActive.vue";
+=======
+>>>>>>> Stashed changes
 
 const pokeActions = usePokeStore();
 
@@ -99,6 +118,49 @@ nav {
   height: 100vh;
   @media screen and (max-width: 1600px) {
     margin: 0;
+  }
+
+  .burger {
+    width: 55px;
+    height: 55px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: rgb(136 165 191 / 48%) 6px 2px 16px 0px,
+      rgb(255 255 255 / 80%) -6px -2px 16px 0px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    transition: all 0.5s ease;
+    margin: 1em;
+  }
+  .burger:hover {
+    background: rgb(56 56 56);
+  }
+  .burger-strip {
+    transition: all 0.5s ease;
+  }
+  .strip div {
+    height: 3px;
+    border-radius: 2px;
+    background: rgb(56 56 56);
+    margin: 10px;
+    transition: all 0.55s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 40px;
+  }
+  .burger:hover .strip div {
+    background: white;
+  }
+
+  .burger:hover .burger-strip-2 div:first-child {
+    transform: translateY(13px) rotate(45deg);
+  }
+  .burger:hover .burger-strip-2 div:nth-child(2) {
+    opacity: 0;
+  }
+  .burger:hover .burger-strip-2 div:last-child {
+    transform: translateY(-13px) rotate(-45deg);
   }
 
   .nav-container {
@@ -371,5 +433,91 @@ a {
   svg g path {
     fill: #ecdfe4;
   }
+}
+
+nav {
+  background-color: #1e1e23;
+  height: 65px;
+}
+
+#menuToggle {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 25px;
+  left: 25px;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#menuToggle input {
+  display: flex;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+
+#menuToggle span {
+  display: flex;
+  width: 29px;
+  height: 2px;
+  margin-bottom: 5px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 3px;
+  z-index: 1;
+  transform-origin: 5px 0px;
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
+}
+
+#menuToggle span:first-child {
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+  transform-origin: 0% 100%;
+}
+
+#menuToggle input:checked ~ span {
+  opacity: 1;
+  transform: rotate(45deg) translate(-3px, -1px);
+  background: #36383f;
+}
+#menuToggle input:checked ~ span:nth-last-child(3) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menuToggle input:checked ~ span:nth-last-child(2) {
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menu {
+  position: absolute;
+  width: 180px;
+  height: 400px;
+  box-shadow: 0 0 10px #85888c;
+  margin: -50px 0 0 -50px;
+  padding: 50px;
+  padding-top: 125px;
+  background-color: #f5f6fa;
+  -webkit-font-smoothing: antialiased;
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+}
+
+#menu li {
+  padding: 10px 0;
+  transition-delay: 2s;
+}
+
+#menuToggle input:checked ~ ul {
+  transform: none;
 }
 </style>
