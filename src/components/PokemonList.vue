@@ -1,5 +1,4 @@
 <template>
-	<h1>pokemon list</h1>
 	<div class="container">
 		<div class="poke-list">
 			<PokeCard

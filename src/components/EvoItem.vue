@@ -20,7 +20,7 @@
 			:to="{ name: `detailPoke`, params: { id: evoData.id } }"
 			class="evo-chain-img"
 		>
-			<img :src="evoData.sprite" alt="" />
+			<img :src="evoData.backSprite" alt="" />
 			<p>{{ evoData.speciesName }}</p>
 		</router-link>
 	</div>
@@ -61,13 +61,21 @@ defineProps({
 			left: 50%;
 			transform: translate(-50%, -50%);
 			z-index: 1;
+			@media screen and (max-width: 1400px) {
+				width: 4em;
+			}
 		}
 		.lvl-poke {
 			margin: 0 1em;
 			min-width: 3.5em;
 			z-index: 2;
 			position: relative;
-
+			@media screen and (max-width: 2000px) {
+				margin: 0 0.4em;
+			}
+			@media screen and (max-width: 1400px) {
+				margin: 0;
+			}
 			img {
 				width: 2.5em;
 			}
@@ -81,6 +89,12 @@ defineProps({
 
 		p {
 			margin: 0;
+		}
+
+		img {
+			@media screen and (max-width: 1400px) {
+				width: 6em;
+			}
 		}
 	}
 }

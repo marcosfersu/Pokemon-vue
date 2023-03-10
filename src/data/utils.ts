@@ -1,17 +1,17 @@
 import App from "@/App.vue";
 import {
-  IextraData,
-  IflavorText,
-  PokeAbilitiesApi,
-  PokeEvo,
-  PokeInfo,
-  PokeStats,
-  PokeStatsApi,
-  PokeTypes,
+	IextraData,
+	IflavorText,
+	PokeAbilitiesApi,
+	PokeEvo,
+	PokeInfo,
+	PokeStats,
+	PokeStatsApi,
+	PokeTypes,
 } from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
 import { createPinia } from "pinia";
-import { createApp } from "vue";
+import { createApp, computed, ref } from "vue";
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -25,192 +25,225 @@ const evoActions = useEvoStore();
 /* -------------------------------------------------------------------------- */
 
 const getTypes = (types: PokeTypes[]) => {
-  const typeList: string[] = [];
-  types.forEach((type) => {
-    typeList.push(type.type.name);
-  });
-  return typeList;
+	const typeList: string[] = [];
+	types.forEach(type => {
+		typeList.push(type.type.name);
+	});
+	return typeList;
 };
 const getAbilities = (abilities: PokeAbilitiesApi[], hidden: boolean) => {
-  const abilitieList: string[] = [];
-  abilities.forEach((abilityt) => {
-    if (hidden) {
-      if (abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
-    } else {
-      if (!abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
-    }
-  });
-  return abilitieList;
+	const abilitieList: string[] = [];
+	abilities.forEach(abilityt => {
+		if (hidden) {
+			if (abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
+		} else {
+			if (!abilityt.is_hidden) abilitieList.push(abilityt.ability.name);
+		}
+	});
+	return abilitieList;
 };
 const getStats = (stats: PokeStatsApi[]) => {
-  const statsList: PokeStats[] = [];
-  stats.forEach((stat) => {
-    const currentStat = {
-      baseStat: stat.base_stat,
-      name: stat.stat.name,
-    };
-    statsList.push(currentStat);
-  });
-  return statsList;
+	const statsList: PokeStats[] = [];
+	stats.forEach(stat => {
+		const currentStat = {
+			baseStat: stat.base_stat,
+			name: stat.stat.name,
+		};
+		statsList.push(currentStat);
+	});
+	return statsList;
 };
 
 const flavorTextEn = (extraData: IextraData) => {
-  let actualFlavorText = "";
-  extraData.flavor_text_entries.map((flavorText: IflavorText) => {
-    if (flavorText.language.name === "en") {
-      actualFlavorText = flavorText.flavor_text;
-    }
-  });
-  return actualFlavorText;
+	let actualFlavorText = "";
+	extraData.flavor_text_entries.map((flavorText: IflavorText) => {
+		if (flavorText.language.name === "en") {
+			actualFlavorText = flavorText.flavor_text;
+		}
+	});
+	return actualFlavorText;
 };
 
 const pokeExtraData = async (url: string) => {
-  const res = await fetch(url);
-  const extraData = await res.json();
+	const res = await fetch(url);
+	const extraData = await res.json();
 
-  const formatEvoId = extraData.evolution_chain.url.split("/");
+	const formatEvoId = extraData.evolution_chain.url.split("/");
 
-  const extraObject = {
-    nameJp: extraData.names[0].name,
-    flavorText: flavorTextEn(extraData),
-    evoId: Number(formatEvoId.slice(-2, -1)),
-  };
+	const extraObject = {
+		nameJp: extraData.names[0].name,
+		flavorText: flavorTextEn(extraData),
+		evoId: Number(formatEvoId.slice(-2, -1)),
+	};
 
-  return extraObject;
+	return extraObject;
 };
 
 const getPoke = async (pokeData: { results: { url: string }[] }) => {
-  pokeData.results.forEach(async (element: { url: string }) => {
-    const pokemonData = await getInividualPoke(element.url);
+	pokeData.results.forEach(async (element: { url: string }) => {
+		const pokemonData = await getInividualPoke(element.url);
 
-    if (pokeActions.checkPoke(pokemonData)) {
-      pokeActions.allPokeStore(pokemonData);
-    }
-  });
+		if (pokeActions.checkPoke(pokemonData)) {
+			pokeActions.allPokeStore(pokemonData);
+		}
+	});
 };
 
 const getInividualPoke = async (urlPoke: string) => {
-  const res = await fetch(urlPoke);
-  const individualPoke = await res.json();
+	const res = await fetch(urlPoke);
+	const individualPoke = await res.json();
 
-  const extraData = await pokeExtraData(individualPoke.species.url);
+	const extraData = await pokeExtraData(individualPoke.species.url);
 
-  const resTypes = getTypes(individualPoke.types);
+	const resTypes = getTypes(individualPoke.types);
 
-  const resStats = getStats(individualPoke.stats);
+	const resStats = getStats(individualPoke.stats);
 
-  const resAbilities = getAbilities(individualPoke.abilities, false);
-  const resHiddenAbilities = getAbilities(individualPoke.abilities, true);
+	const resAbilities = getAbilities(individualPoke.abilities, false);
+	const resHiddenAbilities = getAbilities(individualPoke.abilities, true);
 
-  const pokemonData: PokeInfo = {
-    id: individualPoke.id,
-    name: individualPoke.name,
-    nameJp: extraData.nameJp,
-    flavorText: extraData.flavorText,
-    height: individualPoke.height,
-    weight: individualPoke.weight,
-    sprites: individualPoke.sprites.front_default,
-    officialArtwork:
-      individualPoke.sprites.other["official-artwork"].front_default,
-    officialArtworkShiny:
-      individualPoke.sprites.other["official-artwork"].front_shiny,
-    types: resTypes,
-    stats: resStats,
-    evoId: extraData.evoId,
-    abilities: resAbilities,
-    abilitiesHidden: resHiddenAbilities,
-  };
+	const pokemonData: PokeInfo = {
+		id: individualPoke.id,
+		name: individualPoke.name,
+		nameJp: extraData.nameJp,
+		flavorText: extraData.flavorText,
+		height: individualPoke.height,
+		weight: individualPoke.weight,
+		sprites: individualPoke.sprites.front_default,
+		officialArtwork:
+			individualPoke.sprites.other["official-artwork"].front_default,
+		officialArtworkShiny:
+			individualPoke.sprites.other["official-artwork"].front_shiny,
+		types: resTypes,
+		stats: resStats,
+		evoId: extraData.evoId,
+		abilities: resAbilities,
+		abilitiesHidden: resHiddenAbilities,
+	};
 
-  return pokemonData;
+	return pokemonData;
 };
 
 export const getPokeList = async (urlBase: string) => {
-  const res = await fetch(urlBase);
-  const PokeList = await res.json();
+	const res = await fetch(urlBase);
+	const PokeList = await res.json();
 
-  await getPoke(PokeList);
+	await getPoke(PokeList);
 };
 
 /* -------------------------------------------------------------------------- */
 /*                                  EVOLUTION                                 */
 /* -------------------------------------------------------------------------- */
 
+const getStoneItem = async (ulrStone: string) => {
+	const res = await fetch(ulrStone);
+	const extraData = await res.json();
+
+	return extraData.sprites.default;
+};
+
 const getIndividualEvo = async (urlEvo: string) => {
-  const res = await fetch(urlEvo);
-  const individualEvo = await res.json();
+	const res = await fetch(urlEvo);
+	const individualEvo = await res.json();
 
-  const evoChain: (PokeEvo | PokeEvo[])[] = [];
-  let evoData = individualEvo.chain;
+	const evoChain: (PokeEvo | PokeEvo[])[] = [];
+	let evoData = individualEvo.chain;
+	const pokes = pokeActions.pokeStore;
 
-  do {
-    const evoDetails = evoData["evolution_details"][0];
+	do {
+		const evoDetails = evoData["evolution_details"][0];
+		const filterPoke = computed(() =>
+			pokes.find((pokeS: PokeInfo) => evoData.species.name === pokeS.name)
+		);
+		const actualEvo: PokeEvo = {
+			speciesName: evoData.species.name,
+			minLevel: !evoDetails ? 1 : evoDetails.min_level,
+			triggerName: !evoDetails ? null : evoDetails.trigger.name,
+			item: !evoDetails ? null : evoDetails.item,
+			backSprite: filterPoke.value ? filterPoke.value.sprites : "",
+			id: filterPoke.value ? filterPoke.value.id : 0,
+		};
 
-    evoChain.push({
-      speciesName: evoData.species.name,
-      minLevel: !evoDetails ? 1 : evoDetails.min_level,
-      triggerName: !evoDetails ? null : evoDetails.trigger.name,
-      item: !evoDetails ? null : evoDetails.item,
-    });
+		if (evoDetails && evoDetails.item) {
+			actualEvo.stone = await getStoneItem(evoDetails.item.url);
+		}
 
-    if (evoData["evolves_to"].length > 1) {
-      const evoParallel: PokeEvo[] = [];
-      evoData["evolves_to"].map(
-        (evoData: {
-          species: { name: string };
-          evolution_details: {
-            min_level: number;
-            trigger: { name: string };
-            item: { name: string; url: string };
-          }[];
-        }) => {
-          const evoDetails = evoData["evolution_details"][0];
+		if (filterPoke.value) evoChain.push(actualEvo);
 
-          evoParallel.push({
-            speciesName: evoData.species.name,
-            minLevel: !evoDetails
-              ? 1
-              : evoData["evolution_details"][0].min_level,
-            triggerName: !evoDetails
-              ? null
-              : evoData["evolution_details"][0].trigger.name,
-            item: !evoDetails ? null : evoDetails.item,
-          });
-        }
-      );
+		if (evoData["evolves_to"].length > 1) {
+			const evoParallel: PokeEvo[] = [];
 
-      evoChain.push(evoParallel);
-      break;
-    }
+			evoData["evolves_to"].map(
+				async (evoData: {
+					species: { name: string };
+					evolution_details: {
+						min_level: number;
+						trigger: { name: string };
+						item: { name: string; url: string };
+					}[];
+				}) => {
+					const evoDetails = evoData["evolution_details"][0];
 
-    evoData = evoData["evolves_to"][0];
-  } while (
-    evoData &&
-    Object.prototype.hasOwnProperty.call(evoData, "evolves_to")
-  );
+					const filterPoke = computed(() =>
+						pokes.find((pokeS: PokeInfo) => evoData.species.name === pokeS.name)
+					);
+					const actualEvo: PokeEvo = {
+						speciesName: evoData.species.name,
+						minLevel: !evoDetails
+							? 1
+							: evoData["evolution_details"][0].min_level,
+						triggerName: !evoDetails
+							? null
+							: evoData["evolution_details"][0].trigger.name,
+						item: !evoDetails ? null : evoDetails.item,
+						backSprite: filterPoke.value ? filterPoke.value.sprites : "",
+						id: filterPoke.value ? filterPoke.value.id : 0,
+					};
 
-  const evoPokeList: { id: number; data: (PokeEvo | PokeEvo[])[] } = {
-    id: individualEvo.id,
-    data: evoChain,
-  };
+					if (evoDetails && evoDetails.item) {
+						actualEvo.stone = await getStoneItem(evoDetails.item.url);
+					}
 
-  return evoPokeList;
+					if (filterPoke.value) evoParallel.push(actualEvo);
+				}
+			);
+
+			console.log(evoParallel);
+
+			evoChain.push(evoParallel);
+
+			break;
+		}
+
+		evoData = evoData["evolves_to"][0];
+	} while (
+		evoData &&
+		Object.prototype.hasOwnProperty.call(evoData, "evolves_to")
+	);
+
+	const evoPokeList: { id: number; data: (PokeEvo | PokeEvo[])[] } = {
+		id: individualEvo.id,
+		data: evoChain,
+	};
+
+	return evoPokeList;
 };
 
 const getEvo = async (element: { results: { url: string }[] }) => {
-  element.results.forEach(async (element: { url: string }) => {
-    const evoPokeList = await getIndividualEvo(element.url);
-    const evoTest = evoActions.checkEvo(evoPokeList);
-    if (evoTest) {
-      evoActions.allEvoStore(evoPokeList);
-    }
-  });
+	element.results.forEach(async (element: { url: string }) => {
+		const evoPokeList = await getIndividualEvo(element.url);
+		const evoTest = evoActions.checkEvo(evoPokeList);
+		if (evoTest) {
+			evoActions.allEvoStore(evoPokeList);
+		}
+	});
 };
 
 export const getEvoList = async (urlBase: string) => {
-  const res = await fetch(urlBase);
-  const EvoList = await res.json();
+	const res = await fetch(urlBase);
+	const EvoList = await res.json();
 
-  await getEvo(EvoList);
+	await getEvo(EvoList);
 };
 
 /* -------------------------------------------------------------------------- */
@@ -218,6 +251,6 @@ export const getEvoList = async (urlBase: string) => {
 /* -------------------------------------------------------------------------- */
 
 export const fixNumb = (numb: number | undefined) =>
-  String(numb).padStart(3, "0");
+	String(numb).padStart(3, "0");
 export const fixWeightHeight = (numb: number | undefined) =>
-  numb ? numb / 10 : "";
+	numb ? numb / 10 : "";
