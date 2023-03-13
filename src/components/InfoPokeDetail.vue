@@ -150,6 +150,8 @@ defineProps({
 			flex-direction: column;
 			align-items: center;
 			padding: 1em 2em;
+			background: #ffffff;
+			border-color: #ffffff;
 			@media screen and (max-width: 700px) {
 				width: 50%;
 			}
@@ -202,6 +204,8 @@ defineProps({
 		grid-template-columns: repeat(2, 1fr);
 		width: 100%;
 		gap: 1em 4em;
+		background: #fff9f7;
+		border-color: #fff9f7;
 		@media screen and (max-width: 550px) {
 			grid-template-columns: 1fr;
 		}
@@ -213,6 +217,7 @@ defineProps({
 			justify-content: space-between;
 			align-items: center;
 			gap: 1em;
+
 			p {
 				margin: 0;
 				white-space: nowrap;

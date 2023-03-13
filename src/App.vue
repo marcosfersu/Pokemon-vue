@@ -24,8 +24,8 @@
 						</router-link>
 						<router-link to="/evos">
 							<div class="nav-item">
-								<icon-types class="icon-menu" />
-								<icon-types-active class="icon-menu active" />
+								<icon-evos class="icon-menu" />
+								<icon-evos-active class="icon-menu active" />
 								<p>Evolution</p>
 							</div>
 						</router-link>
@@ -48,6 +48,8 @@ import IconPokedex from "./assets/icons/IconPokedex.vue";
 import IconPokedexActive from "./assets/icons/IconPokedexActive.vue";
 import IconTypes from "./assets/icons/IconTypes.vue";
 import IconTypesActive from "./assets/icons/IconTypesActive.vue";
+import IconEvos from "./assets/icons/IconEvos.vue";
+import IconEvosActive from "./assets/icons/IconEvosActive.vue";
 
 const pokeActions = usePokeStore();
 
@@ -172,6 +174,10 @@ nav {
 
 			img {
 				width: 5em;
+
+				svg path {
+					fill: #cab2bb;
+				}
 			}
 		}
 
@@ -180,7 +186,6 @@ nav {
 			justify-content: flex-start;
 			flex-direction: column;
 			align-items: flex-start;
-			gap: 0.5em;
 		}
 
 		.nav-footer-container {
@@ -207,6 +212,7 @@ nav {
 			gap: 1em;
 			padding: 1em;
 			border-radius: 1em;
+			color: #797979;
 
 			@media screen and (max-width: 1600px) {
 				padding-right: 0;
@@ -242,10 +248,10 @@ nav {
 		&.router-link-exact-active {
 			.nav-item {
 				background-color: #e7cad532;
-			}
 
-			svg g path {
-				fill: #42b983;
+				p {
+					color: #cab2bb;
+				}
 			}
 		}
 	}
@@ -257,13 +263,13 @@ a {
 }
 
 .card {
-	background: #fffeec;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	border-radius: 3em;
-	border: solid #fffdec 0.7em;
+	background: #fbfbfb;
+	border: solid #fbfbfb 0.7em;
 	box-shadow: 0px 2px 20px 5px rgba(0, 0, 0, 0.07);
 	min-width: 15em;
 	padding: 2em 1em;
@@ -275,13 +281,13 @@ a {
 		min-width: 10em;
 	}
 	&.detail-card {
-		box-shadow: 0px 0px 9px 0px rgb(0 0 0 / 2%);
+		box-shadow: 0px 0px 15px 0px rgb(0 0 0 / 3%);
 		flex-direction: row;
 		align-items: flex-end;
 		border-radius: 0.8rem;
 		padding: 2rem;
 		min-width: auto;
-		border: solid #fffdec 0.7rem;
+		border: solid #fbfbfb 0.7rem;
 		box-sizing: border-box;
 		max-width: 100%;
 		@media screen and (max-width: 2000px) {
