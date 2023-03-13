@@ -20,7 +20,7 @@
 			:to="{ name: `detailPoke`, params: { id: evoData.id } }"
 			class="evo-chain-img"
 		>
-			<img :src="evoData.backSprite" alt="" />
+			<img :src="evoData.sprite" alt="" />
 			<p>{{ evoData.speciesName }}</p>
 		</router-link>
 	</div>

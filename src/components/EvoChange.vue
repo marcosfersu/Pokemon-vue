@@ -1,8 +1,7 @@
 <template>
   <article class="card detail-card evo-card">
     <h3 class="detail-title">evolution chain</h3>
-    <div class="evo-card-info" v-if="pokeEvoList">
-      <!--
+    <div class="evo-card-info">
       <div
         v-for="(pokeEvo, index) in pokeEvoList"
         :key="index"
@@ -17,11 +16,7 @@
           <EvoItem :evoData="pokeEvo" />
         </div>
       </div>
-      -->
     </div>
-    <p>
-      {{ evoss }}
-    </p>
   </article>
 </template>
 
@@ -29,6 +24,7 @@
 import { PokeEvo, PokeInfo } from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
 import { computed, defineProps } from "vue";
+import EvoItem from "./EvoItem.vue";
 const evoActions = useEvoStore();
 const pokeActions = usePokeStore();
 const props = defineProps({
@@ -36,69 +32,54 @@ const props = defineProps({
     type: Number,
   },
 });
-
 const pokes = pokeActions.pokeStore;
 const evos = evoActions.EvoStore;
-const evoss = evoActions.EvoStoreSprite;
-
-console.log(evoss);
-
 const filterEvo = computed(() =>
   evos.find((evo: { id: number }) => props.idEvo === evo.id)
 );
-
-console.log(filterEvo.value);
-
 const pokeEvoList = computed(() => {
-  let ActualEvoList: (PokeEvo | PokeEvo[])[] = [];
+  const ActualEvoList: (PokeEvo | PokeEvo[])[] = [];
   if (filterEvo.value) {
     filterEvo.value.data.map((actualEvo: PokeEvo | PokeEvo[]) => {
       if (Array.isArray(actualEvo)) {
-        let parallelArray: PokeEvo[] = [];
-
+        const parallelArray: PokeEvo[] = [];
         actualEvo.map((parallel) => {
           const pokeEvoIndi = pokes.find(
             (pokeS: PokeInfo) => parallel.speciesName === pokeS.name
           );
-
           (async () => {
             if (parallel.item) {
               const res = await fetch(parallel.item.url);
               const extraData = await res.json();
-
               parallel.stone = extraData.sprites.default;
             }
           })();
           parallel.sprite = pokeEvoIndi?.sprites;
           parallel.id = pokeEvoIndi?.id;
-
           if (pokeEvoIndi) parallelArray.push(parallel);
         });
         ActualEvoList.push(parallelArray);
         return ActualEvoList;
       }
-
       const pokeEvoIndi = pokes.find(
         (pokeS: PokeInfo) => actualEvo.speciesName === pokeS.name
       );
-
       (async () => {
         if (actualEvo.item) {
           const res = await fetch(actualEvo.item.url);
           const extraData = await res.json();
-
           actualEvo.stone = extraData.sprites.default;
         }
       })();
-
+      actualEvo.sprite = pokeEvoIndi?.sprites;
+      actualEvo.id = pokeEvoIndi?.id;
       if (pokeEvoIndi) ActualEvoList.push(actualEvo);
     });
   }
-
   return ActualEvoList;
 });
 </script>
-<style lang="scss" scpoed>
+<style lang="scss" scoped>
 .card.detail-card.evo-card {
   flex-direction: column;
   align-items: center;
@@ -112,17 +93,14 @@ const pokeEvoList = computed(() => {
       width: 100%;
     }
   }
-
   .evo-poke-container {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
   .evo-poke-container:nth-child(1) :is(.lvl-poke, svg) {
     display: none;
   }
-
   .detail-title {
     font-weight: 100;
     font-size: 2em;

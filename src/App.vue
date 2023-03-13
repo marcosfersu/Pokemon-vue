@@ -22,7 +22,7 @@
 								<p>Types</p>
 							</div>
 						</router-link>
-						<router-link to="/types">
+						<router-link to="/evos">
 							<div class="nav-item">
 								<icon-types class="icon-menu" />
 								<icon-types-active class="icon-menu active" />

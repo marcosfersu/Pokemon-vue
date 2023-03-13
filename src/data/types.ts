@@ -35,25 +35,23 @@ export interface PokeStats {
 }
 
 export interface PokeEvo {
-	speciesName: string;
-	minLevel: number;
-	triggerName: string | null;
-	item: { name: string; url: string } | null;
-	sprite?: string;
-	stone?: any;
-	id?: number;
-	backSprite?: string;
+  speciesName: string;
+  minLevel: number;
+  triggerName: string | null;
+  item: { name: string; url: string } | null;
+  sprite?: string;
+  stone?: "";
+  id?: number;
 }
 
 export interface IevoData {
-	speciesName: string;
-	minLevel: number;
-	triggerName: string | null;
-	item: { name: string; url: string } | null;
-	sprite?: string;
-	stone?: string;
-	id?: number;
-	backSprite?: string;
+  speciesName: string;
+  minLevel: number;
+  triggerName: string | null;
+  item: { name: string; url: string } | null;
+  sprite?: string;
+  stone?: string;
+  id?: number;
 }
 
 export interface IflavorText {

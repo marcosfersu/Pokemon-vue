@@ -11,7 +11,7 @@ import {
 } from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
 import { createPinia } from "pinia";
-import { computed, createApp } from "vue";
+import { createApp } from "vue";
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -145,24 +145,17 @@ const getIndividualEvo = async (urlEvo: string) => {
   do {
     const evoDetails = evoData["evolution_details"][0];
 
-    const actualEvo: PokeEvo = {
+    evoChain.push({
       speciesName: evoData.species.name,
       minLevel: !evoDetails ? 1 : evoDetails.min_level,
       triggerName: !evoDetails ? null : evoDetails.trigger.name,
       item: !evoDetails ? null : evoDetails.item,
-      stone:
-        evoDetails && evoDetails.item
-          ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${evoDetails.item.name}.png`
-          : "",
-    };
-
-    evoChain.push(actualEvo);
+    });
 
     if (evoData["evolves_to"].length > 1) {
       const evoParallel: PokeEvo[] = [];
-
       evoData["evolves_to"].map(
-        async (evoData: {
+        (evoData: {
           species: { name: string };
           evolution_details: {
             min_level: number;
@@ -172,7 +165,7 @@ const getIndividualEvo = async (urlEvo: string) => {
         }) => {
           const evoDetails = evoData["evolution_details"][0];
 
-          const actualEvo: PokeEvo = {
+          evoParallel.push({
             speciesName: evoData.species.name,
             minLevel: !evoDetails
               ? 1
@@ -181,18 +174,11 @@ const getIndividualEvo = async (urlEvo: string) => {
               ? null
               : evoData["evolution_details"][0].trigger.name,
             item: !evoDetails ? null : evoDetails.item,
-            stone:
-              evoDetails && evoDetails.item
-                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${evoDetails.item.name}.png`
-                : "",
-          };
-
-          evoParallel.push(actualEvo);
+          });
         }
       );
 
       evoChain.push(evoParallel);
-
       break;
     }
 
@@ -214,42 +200,11 @@ const getEvo = async (element: { results: { url: string }[] }) => {
   element.results.forEach(async (element: { url: string }) => {
     const evoPokeList = await getIndividualEvo(element.url);
     const evoTest = evoActions.checkEvo(evoPokeList);
-
     if (evoTest) {
       evoActions.allEvoStore(evoPokeList);
     }
   });
 };
-
-const evos = evoActions.EvoStore;
-const pokes = pokeActions.pokeStore;
-
-const filterEvo = computed(() =>
-  evos.find((evo: { id: number }) => 3 === evo.id)
-);
-
-const pokeEvoList = computed(() => {
-  const ActualEvoList: (PokeEvo | PokeEvo[])[] = [];
-
-  evos.map((actualEvo: any) => {
-    actualEvo.data.map((individualPoke: any) => {
-      const pokeEvoIndi = pokes.find(
-        (pokeS: PokeInfo) => individualPoke.speciesName === pokeS.name
-      );
-      console.log(pokeEvoIndi);
-      individualPoke.sprite = pokeEvoIndi?.sprites;
-      individualPoke.id = pokeEvoIndi?.id;
-
-      if (pokeEvoIndi) ActualEvoList.push(individualPoke);
-    });
-  });
-
-  return ActualEvoList;
-});
-
-console.log(pokeEvoList);
-
-evoActions.allEvoStoreSprite(pokeEvoList);
 
 export const getEvoList = async (urlBase: string) => {
   const res = await fetch(urlBase);
@@ -257,6 +212,13 @@ export const getEvoList = async (urlBase: string) => {
 
   await getEvo(EvoList);
 };
+
+
+
+
+
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                                    UTILS                                   */
