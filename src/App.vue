@@ -12,6 +12,13 @@
 							<div class="nav-item">
 								<icon-pokedex class="icon-menu" />
 								<icon-pokedex-active class="icon-menu active" />
+								<p>Home</p>
+							</div>
+						</router-link>
+						<router-link to="/pokedex">
+							<div class="nav-item">
+								<icon-pokedex class="icon-menu" />
+								<icon-pokedex-active class="icon-menu active" />
 								<p>Pokedex</p>
 							</div>
 						</router-link>

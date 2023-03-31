@@ -31,11 +31,15 @@ import EvoItem from "@/components/EvoItem.vue";
 import TitleSection from "@/components/TitleSection.vue";
 import { PokeEvo, PokeInfo } from "@/data";
 import { useEvoStore, usePokeStore } from "@/store";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 const evoActions = useEvoStore();
 const pokeActions = usePokeStore();
 const pokes = pokeActions.pokeStore;
 const evos = evoActions.EvoStore;
+
+onMounted(() => {
+	window.scrollTo(0, 0);
+});
 
 const pokeEvoList = computed(() => {
 	let ActualEvoList: { data: (PokeEvo | PokeEvo[])[] }[] = [];
